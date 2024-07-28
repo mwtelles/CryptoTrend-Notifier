@@ -4,11 +4,11 @@ import axios from 'axios';
 class CryptoService {
   private apiUrl = 'https://api.coingecko.com/api/v3';
 
-  async checkPriceChange(crypto: string): Promise<number> {
+  async checkPriceChange(crypto: string, currency: string): Promise<number> {
     try {
       const response = await axios.get(`${this.apiUrl}/coins/markets`, {
         params: {
-          vs_currency: 'usd',
+          vs_currency: currency,
           ids: crypto
         }
       });
@@ -20,11 +20,11 @@ class CryptoService {
     }
   }
 
-  async getCurrentPrice(crypto: string): Promise<number> {
+  async getCurrentPrice(crypto: string, currency: string): Promise<number> {
     try {
       const response = await axios.get(`${this.apiUrl}/coins/markets`, {
         params: {
-          vs_currency: 'usd',
+          vs_currency: currency,
           ids: crypto
         }
       });
@@ -46,6 +46,7 @@ class Notifier {
 export function activate(context: vscode.ExtensionContext) {
   const config = vscode.workspace.getConfiguration('cryptoTrendNotifier');
   let cryptos = config.get<string[]>('cryptos') || [];
+  let currency = config.get<string>('currency') || 'usd';
   const threshold = config.get<number>('threshold') || 3;
   const interval = config.get<number>('interval') || 60;
 
@@ -60,7 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
     intervalId = setInterval(async () => {
       for (const crypto of cryptos) {
-        const change = await cryptoService.checkPriceChange(crypto);
+        const change = await cryptoService.checkPriceChange(crypto, currency);
         if (Math.abs(change) >= threshold) {
           notifier.notify(crypto, `has changed by ${change.toFixed(2)}% in the last hour.`);
         }
@@ -81,32 +82,48 @@ export function activate(context: vscode.ExtensionContext) {
     startMonitoring();
   };
 
+  const updateCurrency = async (newCurrency: string) => {
+    currency = newCurrency;
+    await config.update('currency', currency, vscode.ConfigurationTarget.Global);
+    vscode.window.showInformationMessage(`Currency updated to: ${currency}`);
+    startMonitoring();
+  };
+
   context.subscriptions.push(
     vscode.commands.registerCommand('cryptoTrendNotifier.start', startMonitoring),
     vscode.commands.registerCommand('cryptoTrendNotifier.stop', stopMonitoring),
     vscode.commands.registerCommand('cryptoTrendNotifier.configure', async () => {
       const cryptoInput = await vscode.window.showInputBox({
-        placeHolder: 'Enter the cryptocurrencies to monitor, separated by commas (e.g., bitcoin,ethereum)'
+        placeHolder: 'Enter the cryptocurrencies to monitor, separated by commas (e.g., btc,eth)'
       });
 
       if (cryptoInput) {
-        const newCryptos = cryptoInput.split(',').map(c => c.trim());
+        const newCryptos = cryptoInput.split(',').map(c => c.trim().toLowerCase());
         await updateCryptos(newCryptos);
+      }
+    }),
+    vscode.commands.registerCommand('cryptoTrendNotifier.setCurrency', async () => {
+      const currencyInput = await vscode.window.showInputBox({
+        placeHolder: 'Enter the currency to use (e.g., usd, brl)'
+      });
+
+      if (currencyInput) {
+        await updateCurrency(currencyInput.trim().toLowerCase());
       }
     }),
     vscode.commands.registerCommand('cryptoTrendNotifier.checkPrices', async () => {
       for (const crypto of cryptos) {
-        const price = await cryptoService.getCurrentPrice(crypto);
-        notifier.notify(crypto, `current price is $${price.toFixed(2)}`);
+        const price = await cryptoService.getCurrentPrice(crypto, currency);
+        notifier.notify(crypto, `current price is ${currency.toUpperCase()} ${price.toFixed(2)}`);
       }
     }),
     vscode.commands.registerCommand('cryptoTrendNotifier.addCrypto', async () => {
       const cryptoInput = await vscode.window.showInputBox({
-        placeHolder: 'Enter the cryptocurrency to add (e.g., bitcoin)'
+        placeHolder: 'Enter the cryptocurrency to add (e.g., btc)'
       });
 
       if (cryptoInput) {
-        const newCryptos = [...cryptos, cryptoInput.trim()];
+        const newCryptos = [...cryptos, cryptoInput.trim().toLowerCase()];
         await updateCryptos(newCryptos);
       }
     }),
