@@ -1,0 +1,92 @@
+{
+  "name": "crypto-trend-notifier",
+  "displayName": "CryptoTrend Notifier",
+  "description": "Notifies users about cryptocurrency trends and price changes",
+  "version": "0.0.1",
+  "publisher": "Matheus Telles",
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cryptoTrendNotifier.start",
+        "title": "Start CryptoTrend Notifier"
+      },
+      {
+        "command": "cryptoTrendNotifier.stop",
+        "title": "Stop CryptoTrend Notifier"
+      },
+      {
+        "command": "cryptoTrendNotifier.configure",
+        "title": "Configure CryptoTrend Notifier"
+      },
+      {
+        "command": "cryptoTrendNotifier.checkPrices",
+        "title": "Check Current Crypto Prices"
+      },
+      {
+        "command": "cryptoTrendNotifier.addCrypto",
+        "title": "Add a Cryptocurrency to Monitor"
+      },
+      {
+        "command": "cryptoTrendNotifier.removeCrypto",
+        "title": "Remove a Cryptocurrency from Monitoring"
+      },
+      {
+        "command": "cryptoTrendNotifier.listCryptos",
+        "title": "List Monitored Cryptocurrencies"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "CryptoTrend Notifier Configuration",
+      "properties": {
+        "cryptoTrendNotifier.cryptos": {
+          "type": "array",
+          "default": [
+            "bitcoin",
+            "ethereum"
+          ],
+          "description": "List of cryptocurrencies to monitor"
+        },
+        "cryptoTrendNotifier.threshold": {
+          "type": "number",
+          "default": 3,
+          "description": "Percentage change threshold for notifications"
+        },
+        "cryptoTrendNotifier.interval": {
+          "type": "number",
+          "default": 60,
+          "description": "Time interval (in seconds) to check for price changes"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.91.0",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.11.0",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "axios": "^1.7.2"
+  }
+}
