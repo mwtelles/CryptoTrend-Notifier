@@ -26,6 +26,10 @@
         "title": "Configure CryptoTrend Notifier"
       },
       {
+        "command": "cryptoTrendNotifier.setCurrency",
+        "title": "Set Currency for Crypto Prices"
+      },
+      {
         "command": "cryptoTrendNotifier.checkPrices",
         "title": "Check Current Crypto Prices"
       },
@@ -53,6 +57,11 @@
             "ethereum"
           ],
           "description": "List of cryptocurrencies to monitor"
+        },
+        "cryptoTrendNotifier.currency": {
+          "type": "string",
+          "default": "usd",
+          "description": "Currency to use for crypto prices"
         },
         "cryptoTrendNotifier.threshold": {
           "type": "number",
