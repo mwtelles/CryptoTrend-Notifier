@@ -1,0 +1,47 @@
+{
+  "assets": [
+    {
+      "symbol": "btc",
+      "name": "bitcoin",
+      "amount": 0.01480013
+    },
+    {
+      "symbol": "eth",
+      "name": "ethereum",
+      "amount": 0.07241205
+    },
+    {
+      "symbol": "sol",
+      "name": "solana",
+      "amount": 9.75407145
+    },
+    {
+      "symbol": "bonk",
+      "name": "bonk",
+      "amount": 648484.14
+    },
+    {
+      "symbol": "doge",
+      "name": "dogecoin",
+      "amount": 105.3729718
+    },
+    {
+      "symbol": "pepe",
+      "name": "pepe",
+      "amount": 1269822.42
+    },
+    {
+      "symbol": "shib",
+      "name": "shiba inu",
+      "amount": 521536.10
+    },
+    {
+      "symbol": "fet",
+      "name": "fetch.ai",
+      "amount": 6.86645748
+    }
+  ],
+  "currency": "usd",
+  "threshold": 3,
+  "interval": 60
+}

@@ -2,7 +2,7 @@
   "name": "crypto-trend-notifier",
   "displayName": "CryptoTrend Notifier",
   "description": "Notifies users about cryptocurrency trends and price changes",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "publisher": "Matheus Telles",
   "engines": {
     "vscode": "^1.91.0"
@@ -22,59 +22,38 @@
         "title": "Stop CryptoTrend Notifier"
       },
       {
-        "command": "cryptoTrendNotifier.configure",
-        "title": "Configure CryptoTrend Notifier"
-      },
-      {
-        "command": "cryptoTrendNotifier.setCurrency",
-        "title": "Set Currency for Crypto Prices"
-      },
-      {
         "command": "cryptoTrendNotifier.checkPrices",
         "title": "Check Current Crypto Prices"
       },
       {
-        "command": "cryptoTrendNotifier.addCrypto",
-        "title": "Add a Cryptocurrency to Monitor"
+        "command": "cryptoTrendNotifier.addAsset",
+        "title": "Add a Cryptocurrency Asset"
       },
       {
-        "command": "cryptoTrendNotifier.removeCrypto",
-        "title": "Remove a Cryptocurrency from Monitoring"
+        "command": "cryptoTrendNotifier.removeAsset",
+        "title": "Remove a Cryptocurrency Asset"
       },
       {
-        "command": "cryptoTrendNotifier.listCryptos",
-        "title": "List Monitored Cryptocurrencies"
+        "command": "cryptoTrendNotifier.listAssets",
+        "title": "List Monitored Cryptocurrency Assets"
+      },
+      {
+        "command": "cryptoTrendNotifier.openConfig",
+        "title": "Open Configuration File"
+      },
+      {
+        "command": "cryptoTrendNotifier.getAsset",
+        "title": "Get Specific Cryptocurrency Asset"
+      },
+      {
+        "command": "cryptoTrendNotifier.getAllAssets",
+        "title": "Get All Cryptocurrency Assets"
+      },
+      {
+        "command": "cryptoTrendNotifier.getPortfolioValue",
+        "title": "Get Portfolio Value"
       }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "CryptoTrend Notifier Configuration",
-      "properties": {
-        "cryptoTrendNotifier.cryptos": {
-          "type": "array",
-          "default": [
-            "bitcoin",
-            "ethereum"
-          ],
-          "description": "List of cryptocurrencies to monitor"
-        },
-        "cryptoTrendNotifier.currency": {
-          "type": "string",
-          "default": "usd",
-          "description": "Currency to use for crypto prices"
-        },
-        "cryptoTrendNotifier.threshold": {
-          "type": "number",
-          "default": 3,
-          "description": "Percentage change threshold for notifications"
-        },
-        "cryptoTrendNotifier.interval": {
-          "type": "number",
-          "default": 60,
-          "description": "Time interval (in seconds) to check for price changes"
-        }
-      }
-    }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
